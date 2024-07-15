@@ -34,6 +34,11 @@ public class Bullet_Settings : MonoBehaviour
     }
     private void Update()
     {
+        BulletAnimation();
+        CheckFaceDirection();
+    }
+    private void BulletAnimation()
+    {
         BulletState state;
         if (hasHit)
         {
@@ -43,7 +48,21 @@ public class Bullet_Settings : MonoBehaviour
         {
             state = BulletState.Flying;
         }
-       _animator.SetInteger(State, (int)state);
+        _animator.SetInteger(State, (int)state);
+    }
+    private void CheckFaceDirection()
+    {
+        Vector3 scale = transform.localScale;
+        if (_rb.velocity.x < 0)
+        {
+            scale.x = -1f;
+        }
+        else if (_rb.velocity.x > 0)
+        {
+            scale.x = 1f;
+
+        }
+        transform.localScale = scale;
     }
     private IEnumerator bulletDestroy()
     {

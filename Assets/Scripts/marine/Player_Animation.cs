@@ -1,20 +1,22 @@
 using UnityEngine;
 
-public class Marine_Animation : MonoBehaviour
+public class Player_Animation : MonoBehaviour
 {
-    Marine_Movement marine_movement;
     private Animator animator;
     private static readonly int State = Animator.StringToHash("state");
     private enum CharacterState { idle,walk,shoot,death}
+
+    Player_Movement player_movement;
+    
     private void Start()
     {
-        marine_movement = GetComponent<Marine_Movement>();
+        player_movement = GetComponent<Player_Movement>();
         animator = GetComponent<Animator>();
     }
     private void Update()
     {
         CharacterState state;
-        if(marine_movement.IsMoving())
+        if(player_movement.IsMoving())
         {
             state = CharacterState.walk;
         }

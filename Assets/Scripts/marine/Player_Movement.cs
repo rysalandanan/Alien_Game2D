@@ -1,19 +1,22 @@
 using UnityEngine;
 
-public class Marine_Movement : MonoBehaviour
+public class Player_Movement : MonoBehaviour
 {
     private Rigidbody2D rb;
 
     private float xAxis;
+
+    [Header("Player's Speed Value:")]
     [SerializeField] private float movementSpeed;
 
     private bool isMoving = false;
-    private Marine_Shoot _marine_Shoot;
+
+    private Player_Attack player_Attack;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        _marine_Shoot = GetComponent<Marine_Shoot>();
+        player_Attack = GetComponent<Player_Attack>();
     }
     private void Update()
     {
@@ -29,7 +32,7 @@ public class Marine_Movement : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        if (!_marine_Shoot.IsFiring())
+        if (!player_Attack.IsFiring())
         {
             xAxis = Input.GetAxisRaw("Horizontal");
             rb.velocity = new Vector2(xAxis * movementSpeed, rb.velocity.y);
