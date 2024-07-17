@@ -17,6 +17,7 @@ public class Player_Movement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         player_Attack = GetComponent<Player_Attack>();
+        CheckNull();
     }
     private void Update()
     {
@@ -32,11 +33,18 @@ public class Player_Movement : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        if (!player_Attack.IsFiring())
+        if(player_Attack != null)
         {
-            xAxis = Input.GetAxisRaw("Horizontal");
-            rb.velocity = new Vector2(xAxis * movementSpeed, rb.velocity.y);
+            if (!player_Attack.IsFiring())
+            {
+                Movement();
+            }
         }
+    }
+    private void Movement()
+    {
+        xAxis = Input.GetAxisRaw("Horizontal");
+        rb.velocity = new Vector2(xAxis * movementSpeed, rb.velocity.y);
     }
     private void CharacterFlip()
     {
@@ -55,5 +63,20 @@ public class Player_Movement : MonoBehaviour
     public bool IsMoving()
     {
         return isMoving;
+    }
+    private void CheckNull()
+    {
+        if(rb == null)
+        {
+            Debug.LogError("Rigidbody is not assigned or invalid");
+        }    
+        if(float.IsNaN(movementSpeed))
+        {
+            Debug.LogError("xAxis is not assigned or invalid");
+        }
+        if(player_Attack == null)
+        {
+            Debug.LogError("Player Attack is not assigned or invalid");
+        }
     }
 }

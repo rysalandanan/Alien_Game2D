@@ -6,16 +6,23 @@ public class Player_Attack : MonoBehaviour
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private float bulletSpeed;
     [SerializeField] private Transform gunBarrel;
-    [SerializeField] private float TimeBeforEachShot;
+    [SerializeField] private float TimeBetweenShots;
     private bool canFire = true;
     private bool isFiring = false;
 
+    private void Start()
+    {
+        CheckNull();
+    }
     private void Update()
     {
-        if (Input.GetButtonDown("Jump") && canFire)
+        if(bulletPrefab != null && gunBarrel != null)
         {
-            FireWeapon();
-            StartCoroutine(RateOfFire());
+            if (Input.GetButtonDown("Jump") && canFire)
+            {
+                FireWeapon();
+                StartCoroutine(RateOfFire());
+            }
         }
     }
 
@@ -38,11 +45,30 @@ public class Player_Attack : MonoBehaviour
     {
         isFiring = false;
         canFire = false;
-        yield return new WaitForSecondsRealtime(TimeBeforEachShot);
+        yield return new WaitForSecondsRealtime(TimeBetweenShots);
         canFire = true;
     }
     public bool IsFiring()
     {
         return isFiring;
+    }
+    private void CheckNull()
+    {
+        if(bulletPrefab == null)
+        {
+            Debug.LogError("Bullet prefab is not assigned or invalid");
+        }
+        if(float.IsNaN(bulletSpeed))
+        {
+            Debug.LogError("bullet speed is not assigned or invalid");
+        }
+        if (gunBarrel == null)
+        {
+            Debug.LogError("Gun barrel is not assigned or invalid");
+        }
+        if (float.IsNaN(TimeBetweenShots))
+        {
+            Debug.Log("Time before each shot is not assigned or invalid");
+        }
     }
 }
