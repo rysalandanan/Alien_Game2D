@@ -7,12 +7,11 @@ public class Teleport : MonoBehaviour
     [SerializeField] private GameObject player;
     [Header("Teleporter Exit's reference: ")]
     [SerializeField] private Transform teleporterExit;
-    [Header("Player's X off set after teleport: ")]
-    [SerializeField] private float xOffset;
+
     [Header("Main Game's Camera: ")]
     [SerializeField] private Camera mainCamera;
     [Header("Main Game's Camera new position: ")]
-    [SerializeField] private Transform newCamPosition;
+    [SerializeField] private Transform cameraTargetPosition;
 
     private void Start()
     {
@@ -35,13 +34,16 @@ public class Teleport : MonoBehaviour
     }
     private void TeleportPlayer()
     {
-        var exit = teleporterExit.transform.position;
-        if (teleporterExit != null && player != null && newCamPosition != null)
+        if (teleporterExit != null && player != null && cameraTargetPosition != null)
         {
-            player.transform.position = new Vector2(exit.x + xOffset, exit.y);
-            mainCamera.transform.position = newCamPosition.transform.position;
+            var exitPosition = teleporterExit.transform.position;
+            player.transform.position = new Vector2(exitPosition.x, exitPosition.y);
+
+            var targetCameraPosition = cameraTargetPosition.transform.position;
+            mainCamera.transform.position = new Vector3(targetCameraPosition.x, targetCameraPosition.y, mainCamera.transform.position.z);
         }
     }
+
     private void CheckNull()
     {
         if (player == null)
@@ -56,9 +58,10 @@ public class Teleport : MonoBehaviour
         {
             Debug.LogError("Pop Up is not assigned or invalid");
         }
-        if(newCamPosition == null)
+        if(cameraTargetPosition == null)
         {
             Debug.Log("New Camera Position is not assigned or invalid");
         }
+        
     }
 }
