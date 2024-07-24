@@ -12,6 +12,8 @@ public class Pop_Up : MonoBehaviour
     [SerializeField] private float xOffset;
     [Header("Interaction Prompt's Position Y offset")]
     [SerializeField] private float yOffset;
+
+    [SerializeField] private GameObject dialogueScript;
     private Vector2 originalPosition;
 
     private bool isPlayerClose = false;
@@ -39,6 +41,7 @@ public class Pop_Up : MonoBehaviour
     {
         if (interactionPrompt != null)
         {
+            dialogueScript.SetActive(true);
             interactionPrompt.text = promptText.ToString();
             interactionPrompt.transform.position = new Vector2(transform.position.x + xOffset, transform.position.y + yOffset);
             interactionPrompt.gameObject.SetActive(true);
@@ -49,6 +52,7 @@ public class Pop_Up : MonoBehaviour
     {
         if(interactionPrompt != null)
         {
+            dialogueScript.SetActive(false);
             interactionPrompt.gameObject.SetActive(false);
             interactionPrompt.transform.position = originalPosition;
             isPlayerClose = false;
