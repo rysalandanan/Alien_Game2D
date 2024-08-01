@@ -43,9 +43,9 @@ public class Player_Attack : MonoBehaviour
     }
     private IEnumerator RateOfFire()
     {
-        isFiring = false;
         canFire = false;
         yield return new WaitForSecondsRealtime(TimeBetweenShots);
+        isFiring = false;
         canFire = true;
     }
     public bool IsFiring()

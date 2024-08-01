@@ -4,8 +4,7 @@ using System.Collections;
 
 public class Dialogue : MonoBehaviour
 {
-    private Pop_Up pop_up;
-    [SerializeField] private GameObject dialogueBox;
+    private Interact interact;
     private int currentLineIndex = 0;
     private bool isTyping = false;
 
@@ -15,21 +14,24 @@ public class Dialogue : MonoBehaviour
 
     void Start()
     {
-        pop_up = GetComponentInParent<Pop_Up>();
+        interact = GetComponentInParent<Interact>();
         CheckNull();
     }
 
     void Update()
     {
-        if (pop_up != null)
+        if (interact != null && dialogueText != null) 
         {
-            if (pop_up.IsPlayerClose() && Input.GetKeyDown(KeyCode.E) && !dialogueBox.activeInHierarchy)
+            if(interact.IsPlayerClose())
             {
-                StartDialogue();
-            }
-            else if (dialogueBox.activeInHierarchy && Input.GetKeyDown(KeyCode.F) && !isTyping)
-            {
-                NextLine();
+                if(Input.GetKeyDown(KeyCode.E) && !dialogueText.gameObject.activeInHierarchy)
+                {
+                    StartDialogue();
+                }
+                else if (dialogueText.gameObject.activeInHierarchy && Input.GetKeyDown(KeyCode.RightArrow) && !isTyping)
+                {
+                    NextLine();
+                }
             }
         }
     }
@@ -38,7 +40,7 @@ public class Dialogue : MonoBehaviour
     {
         currentLineIndex = 0;
         StartCoroutine(TypeLine());
-        dialogueBox.SetActive(true);
+        dialogueText.gameObject.SetActive(true);
     }
 
     private IEnumerator TypeLine()
@@ -68,18 +70,14 @@ public class Dialogue : MonoBehaviour
 
     private void EndDialogue()
     {
-        dialogueBox.SetActive(false);
+        dialogueText.gameObject.SetActive(false);
     }
 
     private void CheckNull()
     {
-        if (pop_up == null)
+        if (interact == null)
         {
             Debug.LogError("Pop up is not assigned or invalid.");
-        }
-        if (dialogueBox == null)
-        {
-            Debug.LogError("Dialogue Box is not assigned or invalid.");
         }
         if (dialogueText == null)
         {

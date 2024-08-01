@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class Teleport : MonoBehaviour
 {
-    private Pop_Up pop_up;
     [Header("Player reference: ")]
     [SerializeField] private GameObject player;
     [Header("Teleporter Exit's reference: ")]
@@ -15,21 +14,13 @@ public class Teleport : MonoBehaviour
 
     private void Start()
     {
-        pop_up = GetComponent<Pop_Up>();
         CheckNull();
     }
-    private void Update()
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-       PlayerInteract();
-    }
-    private void PlayerInteract()
-    {
-        if (pop_up != null)
+        if(collision.gameObject.CompareTag("Player"))
         {
-            if (pop_up.IsPlayerClose() && Input.GetKeyDown(KeyCode.E))
-            {
-                TeleportPlayer();
-            }
+            TeleportPlayer();
         }
     }
     private void TeleportPlayer()
@@ -54,14 +45,9 @@ public class Teleport : MonoBehaviour
         {
             Debug.LogError("Teleporter Exit is not assigned or invalid");
         }
-        if (pop_up == null)
-        {
-            Debug.LogError("Pop Up is not assigned or invalid");
-        }
         if(cameraTargetPosition == null)
         {
             Debug.Log("New Camera Position is not assigned or invalid");
-        }
-        
+        }  
     }
 }
